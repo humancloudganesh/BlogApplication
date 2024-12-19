@@ -1,0 +1,55 @@
+package com.example.BlogApplication.Controller;
+
+import com.example.BlogApplication.Payload.UserDto;
+import com.example.BlogApplication.Responce.UserResponse;
+import com.example.BlogApplication.Service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+@RequestMapping("/user")
+public class UserController {
+
+    private UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<UserDto> CreateUser(UserDto userDto)
+    {
+        UserDto SaveDto = userService.CreateUser(userDto);
+        return new ResponseEntity<>(SaveDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<UserDto> UpdateUser(@RequestBody UserDto userDto, @PathVariable long userId)
+    {
+        UserDto updatedDto=userService.UpdateUser(userDto,userId);
+        return ResponseEntity.ok(updatedDto);
+    }
+
+    @GetMapping("/users/{UserId}")
+    public ResponseEntity<UserDto> GetUserById(@PathVariable long UserId)
+    {
+       UserDto userDto = userService.GetUser(UserId);
+      return new ResponseEntity<>(userDto,HttpStatus.FOUND);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<UserDto>> GetAll()
+    {
+        List<UserDto> userDtos = userService.GetAllUsers();
+        return ResponseEntity.ok(userDtos);
+    }
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> DeleteUser(long userId)
+    {
+        userService.DeleteUser(userId);
+
+        return ResponseEntity.ok(new UserResponse("user is deleted",true));
+    }
+}
