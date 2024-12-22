@@ -3,6 +3,8 @@ package com.example.BlogApplication.Controller;
 import com.example.BlogApplication.Payload.UserDto;
 import com.example.BlogApplication.Responce.UserResponse;
 import com.example.BlogApplication.Service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,16 +12,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 @RequestMapping("/user")
+@RestController
 public class UserController {
 
     private UserService userService;
 
-    public UserController(UserService userService) {
+    @Autowired
+    public void  UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/save")
-    public ResponseEntity<UserDto> CreateUser(UserDto userDto)
+    public ResponseEntity<UserDto> CreateUser(@Valid @RequestBody UserDto userDto)
     {
         UserDto SaveDto = userService.CreateUser(userDto);
         return new ResponseEntity<>(SaveDto, HttpStatus.CREATED);

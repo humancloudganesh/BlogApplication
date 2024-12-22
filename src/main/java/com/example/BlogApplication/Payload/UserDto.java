@@ -1,13 +1,22 @@
 package com.example.BlogApplication.Payload;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 public class UserDto {
 
     private long id;
 
+    @NotEmpty(message = "name should not be empty")
+    @Size(min = 3, max =10,message ="name at least containing 3 characters !!")
     private String name;
 
+    @Email(message = "invalid user email address !!")
     private String email;
 
+    @NotEmpty(message="password should not be empty !!")
+    @Size(min = 3,max = 12,message = "password must be at least 3 character and max 10 characters !!")
     private String password;
 
     private String about;

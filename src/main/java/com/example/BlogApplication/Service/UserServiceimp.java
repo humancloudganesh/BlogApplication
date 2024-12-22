@@ -5,17 +5,20 @@ import com.example.BlogApplication.Exception.ResourceNotFoundException;
 import com.example.BlogApplication.Payload.UserDto;
 import com.example.BlogApplication.Repositor.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class UserServiceimp implements UserService {
 
     private UserRepository userRepository;
 
     private ModelMapper modelMapper;
 
-
+     @Autowired
     public void UserServiceImp(UserRepository userRepository,ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
@@ -66,25 +69,25 @@ public class UserServiceimp implements UserService {
 
     public User toUser(UserDto userDto) {
         User user = new User();
-        modelMapper.map(user,userDto);
+      return  modelMapper.map(userDto,User.class);
 //        user.setId(userDto.getId());
 //        user.setName(userDto.getName());
 //        user.setEmail(userDto.getEmail());
 //        user.setPassword(userDto.getPassword());
 //        user.setAbout(userDto.getAbout());
 
-        return user;
+//        return user;
     }
 
     public UserDto toUserDto(User user) {
         UserDto userDto = new UserDto();
-        modelMapper.map(user,userDto);
+       return modelMapper.map(user,UserDto.class);
         /*userDto.setId(user.getId());
         userDto.setName(user.getName());
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
         userDto.setAbout(user.getAbout());
 */
-        return userDto;
+//        return userDto;
     }
 }
