@@ -1,6 +1,6 @@
 package com.example.BlogApplication.Exception;
 
-import com.example.BlogApplication.Responce.UserResponse;
+import com.example.BlogApplication.Responce.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -15,12 +15,12 @@ import java.util.Map;
 public class ExceptionHndler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<UserResponse> ResourceNotFoundExceptionHandler(ResourceNotFoundException ex)
+    public ResponseEntity<ApiResponse> ResourceNotFoundExceptionHandler(ResourceNotFoundException ex)
     {
         String errorMessage = ex.getMessage();
-        UserResponse userResponse = new UserResponse("errorMessage",false);
+        ApiResponse apiResponse = new ApiResponse("errorMessage",false);
 
-        return  new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        return  new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
