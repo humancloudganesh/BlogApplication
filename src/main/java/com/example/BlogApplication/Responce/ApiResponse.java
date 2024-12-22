@@ -1,14 +1,14 @@
 package com.example.BlogApplication.Responce;
 
-public class UserResponse {
+public class ApiResponse {
 
     private String message;
     private boolean success;
 
-    public UserResponse() {
+    public ApiResponse() {
     }
 
-    public UserResponse(String message, boolean success) {
+    public ApiResponse(String message, boolean success) {
         this.message = message;
         this.success = success;
     }

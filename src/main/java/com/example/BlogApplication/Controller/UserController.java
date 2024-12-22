@@ -1,7 +1,7 @@
 package com.example.BlogApplication.Controller;
 
 import com.example.BlogApplication.Payload.UserDto;
-import com.example.BlogApplication.Responce.UserResponse;
+import com.example.BlogApplication.Responce.ApiResponse;
 import com.example.BlogApplication.Service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
+
 @RequestMapping("/user")
 @RestController
 public class UserController {
@@ -49,11 +49,11 @@ public class UserController {
         List<UserDto> userDtos = userService.GetAllUsers();
         return ResponseEntity.ok(userDtos);
     }
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{userId}")
     public ResponseEntity<?> DeleteUser(long userId)
     {
         userService.DeleteUser(userId);
 
-        return ResponseEntity.ok(new UserResponse("user is deleted",true));
+        return ResponseEntity.ok(new ApiResponse("user is deleted",true));
     }
 }
