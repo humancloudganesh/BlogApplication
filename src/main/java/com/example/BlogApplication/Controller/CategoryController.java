@@ -35,7 +35,7 @@ public class CategoryController {
         CategoryDto categoryDto1 = categoryService.UpdateCategory(categoryDto, categoryId);
         return new ResponseEntity<>(categoryDto,HttpStatus.OK);
     }
-    @GetMapping("/GetById")
+    @GetMapping("/GetById/{categoryId}")
     public ResponseEntity<CategoryDto> GetByCategoryId(@PathVariable long categoryId)
     {
         CategoryDto categoryDto = categoryService.GetCategoryById(categoryId);

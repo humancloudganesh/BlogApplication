@@ -3,7 +3,9 @@ package com.example.BlogApplication.Payload;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-public class CategoryDto {
+import java.io.Serializable;
+
+public class CategoryDto implements Serializable {
 
     private long id;
 

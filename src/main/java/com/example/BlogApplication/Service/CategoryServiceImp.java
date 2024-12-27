@@ -7,6 +7,9 @@ import com.example.BlogApplication.Repositor.CategoryRepository;
 import com.example.BlogApplication.Responce.ApiResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +36,7 @@ public class CategoryServiceImp implements CategoryService {
        categoryRepository.save(category);
       return modelMapper.map(category,CategoryDto.class);
    }
-
+   @CachePut(value ="Category",key ="#categoryId")
    @Override
    public CategoryDto UpdateCategory(CategoryDto categoryDto,long categoryId) {
       Category updatedCategory= modelMapper.map(categoryDto, Category.class);
@@ -44,15 +47,14 @@ public class CategoryServiceImp implements CategoryService {
       Category updated = categoryRepository.save(category);
       return modelMapper.map(updated,CategoryDto.class) ;
    }
-
+   @Cacheable(value ="Category",key ="#categoryId")
    @Override
    public CategoryDto GetCategoryById(long categoryId) {
 
        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("category", "categoryId", categoryId));
        return modelMapper.map(category,CategoryDto.class);
    }
-
-   @Override
+   @Cacheable(value ="Categorys")
    public List<CategoryDto> GetALL() {
 
        CategoryRepository categoryRepository1 = categoryRepository;
@@ -62,7 +64,7 @@ public class CategoryServiceImp implements CategoryService {
 
        return collect;
    }
-
+   @CacheEvict(value ="Category",key ="#categoryId")
    @Override
    public void DeleteCategory(long categoryId) {
 

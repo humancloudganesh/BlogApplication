@@ -1,12 +1,12 @@
 package com.example.BlogApplication.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
-public class Category {
+public class Category implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,14 +16,8 @@ public class Category {
 
     private String CategoryDescription;
 
-    public Category(long id, String categoryTitle, String categoryDescription) {
-        this.id = id;
-        CategoryTitle = categoryTitle;
-        CategoryDescription = categoryDescription;
-    }
-
-    public Category() {
-    }
+    @OneToMany(mappedBy ="category" ,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Post> posts;
 
     public long getId() {
         return id;
@@ -47,5 +41,23 @@ public class Category {
 
     public void setCategoryDescription(String categoryDescription) {
         CategoryDescription = categoryDescription;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public Category(long id, String categoryTitle, String categoryDescription, List<Post> posts) {
+        this.id = id;
+        CategoryTitle = categoryTitle;
+        CategoryDescription = categoryDescription;
+        this.posts = posts;
+    }
+
+    public Category() {
     }
 }
