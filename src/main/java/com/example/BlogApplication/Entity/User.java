@@ -1,15 +1,15 @@
 package com.example.BlogApplication.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.io.Serializable;
+import java.util.List;
+
 @Entity
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -21,6 +21,9 @@ public class User {
     private String password;
 
     private String about;
+
+    @OneToMany(mappedBy ="user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Post> posts;
 
     public long getId() {
         return id;
@@ -62,14 +65,23 @@ public class User {
         this.about = about;
     }
 
-    public User() {
+    public List<Post> getPosts() {
+        return posts;
     }
 
-    public User(long id, String name, String email, String password, String about) {
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public User(long id, String name, String email, String password, String about, List<Post> posts) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.about = about;
+        this.posts = posts;
+    }
+
+    public User() {
     }
 }

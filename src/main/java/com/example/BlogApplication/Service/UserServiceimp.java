@@ -6,6 +6,9 @@ import com.example.BlogApplication.Payload.UserDto;
 import com.example.BlogApplication.Repositor.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,7 +34,7 @@ public class UserServiceimp implements UserService {
         userRepository.save(user);
         return this.toUserDto(user);
     }
-
+    @CachePut(value = "User", key = "#userId")
     @Override
     public UserDto UpdateUser(UserDto userDto,long userId) {
 
@@ -43,21 +46,21 @@ public class UserServiceimp implements UserService {
         user.setAbout(userDto.getAbout());
         return this.toUserDto(user);
     }
-
+    @Cacheable(value = "User", key = "#userId")
     @Override
     public UserDto GetUser(long userId) {
 
         User user = userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("user","Id",userId));
         return this.toUserDto(user);
     }
-
+    @CacheEvict(value = "User", key = "#userId")
     @Override
     public void DeleteUser(long userId) {
 
         User user = userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("user","Id",userId));
         userRepository.delete(user);
     }
-
+    @Cacheable(value ="Users")
     @Override
     public List<UserDto> GetAllUsers() {
 
