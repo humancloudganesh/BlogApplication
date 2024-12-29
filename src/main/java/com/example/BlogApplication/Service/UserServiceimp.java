@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,6 +17,9 @@ import java.util.stream.Collectors;
 
 @Component
 public class UserServiceimp implements UserService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private UserRepository userRepository;
 
@@ -31,6 +35,8 @@ public class UserServiceimp implements UserService {
     public UserDto CreateUser(UserDto userDto) {
 
         User user = toUser(userDto);
+        String hashedPassword = passwordEncoder.encode(userDto.getPassword());
+        user.setPassword(hashedPassword);
         userRepository.save(user);
         return this.toUserDto(user);
     }
@@ -39,10 +45,10 @@ public class UserServiceimp implements UserService {
     public UserDto UpdateUser(UserDto userDto,long userId) {
 
         User user = userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("user","Id",userId));
-
+        String hashedPassword = passwordEncoder.encode(userDto.getPassword());
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(hashedPassword);
         user.setAbout(userDto.getAbout());
         return this.toUserDto(user);
     }
